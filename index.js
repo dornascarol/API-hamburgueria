@@ -3,11 +3,13 @@ const port = 3000
 
 const app = express() 
 
-app.get("/order", (request, response) => {
-    
-    const { order, clienteName, price, orderStatus } = request.query  //destructuring assignment
+app.get("/order/:id", (request, response) => {
 
-    return response.json({order, clienteName, price, orderStatus})
+    const { id } = request.params        //destructuring assignment
+
+    console.log(id)
+
+    return response.json({id})
 })
 
 
