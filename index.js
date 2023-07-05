@@ -1,17 +1,15 @@
 const express = require("express")
+
 const port = 3000
-
 const app = express() 
+app.use(express.json())
 
-app.get("/order/:id", (request, response) => {
+app.get("/order", (request, response) => {
+    
+    const { order, clientName, price, orderStatus } = request.body
 
-    const { id } = request.params        //destructuring assignment
-
-    console.log(id)
-
-    return response.json({id})
+    return response.json({ order, clientName, price, orderStatus })
 })
-
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
