@@ -39,6 +39,20 @@ app.put("/order/:id", (request, response) => {
     return response.json(updateOrder)
 })
 
+app.delete("/order/:id", (request, response) => {
+    const { id } = request.params
+
+    const index = ordersTotal.findIndex(element => element.id === id)
+
+    if (index < 0) {
+        return response.status(404).json({message: "Not Found"})
+    }
+
+    ordersTotal.splice(index, 1)
+
+    return response.status(204).json()
+})
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
