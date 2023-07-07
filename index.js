@@ -7,6 +7,20 @@ app.use(express.json())
 
 const ordersTotal = []
 
+const checkId = (request, response, next) => {
+    const { id } = request.params
+
+    const index = ordersTotal.findIndex(element => element.id === id)
+
+    if (index < 0) {
+        return response.status(404).json({ error: "Not Found" })
+    }
+
+    request.orderIndex = index
+    request.orderId = id
+
+    next()
+}
 
 app.get("/order", (request, response) => {
     return response.json(ordersTotal)
@@ -22,31 +36,20 @@ app.post("/order", (request, response) => {
     return response.status(201).json(createOrder)
 })
 
-app.put("/order/:id", (request, response) => {
-    const { id } = request.params
+app.put("/order/:id", checkId, (request, response) => {
     const { order, clientName, price, orderStatus } = request.body
+    const index = request.orderIndex
+    const id = request.orderId
 
     const updateOrder = { id, order, clientName, price, orderStatus }
-
-    const index = ordersTotal.findIndex(element => element.id === id)
-
-    if (index < 0) {
-        return response.status(404).json({message: "Not Found"})
-    }
 
     ordersTotal[index] = updateOrder
 
     return response.json(updateOrder)
 })
 
-app.delete("/order/:id", (request, response) => {
-    const { id } = request.params
-
-    const index = ordersTotal.findIndex(element => element.id === id)
-
-    if (index < 0) {
-        return response.status(404).json({message: "Not Found"})
-    }
+app.delete("/order/:id", checkId, (request, response) => {
+    const index = request.orderIndex
 
     ordersTotal.splice(index, 1)
 
