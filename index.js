@@ -56,6 +56,14 @@ app.delete("/order/:id", checkId, (request, response) => {
     return response.status(204).json()
 })
 
+app.get("/order/:id", checkId, (request, response) => {
+    const index = request.orderIndex
+
+    const specificOrder = ordersTotal[index] 
+
+    return response.json(specificOrder)
+})
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
