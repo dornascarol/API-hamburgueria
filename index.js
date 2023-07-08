@@ -22,11 +22,21 @@ const checkId = (request, response, next) => {
     next()
 }
 
-app.get("/order", (request, response) => {
+const checkRequest = (request, response, next) => {
+    const method = request.method
+
+    const url = request.url
+
+    console.log(`[${method}] - ${url} `)
+
+    next()
+}
+
+app.get("/order", checkRequest, (request, response) => {
     return response.json(ordersTotal)
 })
 
-app.post("/order", (request, response) => {
+app.post("/order", checkRequest, (request, response) => {
     const { order, clientName, price, orderStatus } = request.body
 
     const createOrder = { id: uuid.v4(), order, clientName, price, orderStatus }
@@ -36,7 +46,7 @@ app.post("/order", (request, response) => {
     return response.status(201).json(createOrder)
 })
 
-app.put("/order/:id", checkId, (request, response) => {
+app.put("/order/:id", checkId, checkRequest, (request, response) => {
     const { order, clientName, price, orderStatus } = request.body
     const index = request.orderIndex
     const id = request.orderId
@@ -48,7 +58,7 @@ app.put("/order/:id", checkId, (request, response) => {
     return response.json(updateOrder)
 })
 
-app.delete("/order/:id", checkId, (request, response) => {
+app.delete("/order/:id", checkId, checkRequest, (request, response) => {
     const index = request.orderIndex
 
     ordersTotal.splice(index, 1)
@@ -56,7 +66,7 @@ app.delete("/order/:id", checkId, (request, response) => {
     return response.status(204).json()
 })
 
-app.get("/order/:id", checkId, (request, response) => {
+app.get("/order/:id", checkId, checkRequest, (request, response) => {
     const index = request.orderIndex
 
     const specificOrder = ordersTotal[index] 
@@ -64,7 +74,7 @@ app.get("/order/:id", checkId, (request, response) => {
     return response.json(specificOrder)
 })
 
-app.patch("/order/:id", checkId, (request, response) => {
+app.patch("/order/:id", checkId, checkRequest, (request, response) => {
     const index = request.orderIndex
 
     ordersTotal[index].orderStatus = "Pronto"
