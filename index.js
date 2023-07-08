@@ -64,6 +64,14 @@ app.get("/order/:id", checkId, (request, response) => {
     return response.json(specificOrder)
 })
 
+app.patch("/order/:id", checkId, (request, response) => {
+    const index = request.orderIndex
+
+    ordersTotal[index].orderStatus = "Pronto"
+    
+    return response.json(ordersTotal[index])
+})
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
