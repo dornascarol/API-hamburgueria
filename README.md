@@ -2,32 +2,52 @@
 <br>
 
 <h2> Este foi o projeto que aprendi no curso do DevClub </h2>
-<p> Aplicação para cadastro de pedidos de uma hamburgueria. Projeto prático para aprimorar os conceitos do módulo "Iniciando no Node" e criar uma API REST, com base no escopo já definido de tarefas. </p>
+<p> Aplicação para cadastro de pedidos de uma hamburgueria. Projeto prático para aprimorar os conceitos do módulo "Iniciando no Node" e criar uma API REST com base no escopo já definido de tarefas. </p>
 
 <h2> Introdução </h2>
 <p> Usar Node.JS e Express para criar uma API que executa operações CRUD nos pedidos. </p>
 
 <h2> Ferramentas </h2>
-<p> Para a aplicação foi utilizado o <a target="_blank" href="https://nodejs.org/en/download"> Node.JS </a>  na versão 18.14.0 em LTS </p>
-<p> O <a target="_blank" href="https://www.npmjs.com/"> NPM </a> veio na instalação do Node.JS na versão 9.3.1 </p>
-<p> Foi usado o programa <a target="_blank" href="https://insomnia.rest/download"> Insomnia </a> para testar as requisições das rotas simulando o Front-end. </p>
+<p> Na aplicação foi utilizado o <a href="https://nodejs.org/en/download" target="_blank" > Node.JS </a>  na versão 18.14.0 em LTS. </p>
+<p> O <a href="https://www.npmjs.com/" target="_blank" > NPM </a> veio na instalação do Node.JS na versão 9.3.1 </p>
+<p> Foi usado o programa <a href="https://insomnia.rest/download" target="_blank" > Insomnia </a> para testar as requisições das rotas simulando o Front-end. </p>
 
-<h2> Dependências </h2>
-<p> Framework Express - versão 4.18.2 </p>
-<p> :small_orange_diamond: $ npm install express </p>
-<p> <a target="_blank" href="https://www.npmjs.com/package/express"> Documentação </a> </p>
+## Dependências 
+Framework Express - versão 4.18.2 
 <br>
-<p> Biblioteca uuid - versão 9.0.0 </p>
-<p> :small_orange_diamond: $ npm install uuid </p>
-<p> Função do tipo v.4 </p>
-<p> <a target="_blank" href="https://www.npmjs.com/package/uuidv4"> Documentação </a> </p>
+<br>
+:small_orange_diamond: `$ npm install express` 
+<br>
+<br>
+<a href="https://www.npmjs.com/package/express" target="_blank" > Documentação </a> 
+<br>
+<br>
+<br>
+Biblioteca uuid - versão 9.0.0
+<br>
+<br>
+:small_orange_diamond: `$ npm install uuid`
+<br>
+<br>
+Função do tipo v.4 
+<br>
+<br>
+<a href="https://www.npmjs.com/package/uuidv4" target="_blank" > Documentação </a> 
 
-<h2> Dependência de desenvolvimento </h2>
-<p> Nodemon - versão 2.0.22 </p>
-<p> :small_orange_diamond: $ npm install nodemon </p>
-<p> Foi criado um script ao package.json para o nodemon: "dev". </p>
-<p> Rodando o servidor: escrever no terminal "npm run dev". </p>
-<p> Parar de rodar o servidor: no terminal clicar nas teclas de "Ctrl" e "C". </p>
+## Dependência de desenvolvimento
+Nodemon - versão 2.0.22
+<br>
+<br>
+:small_orange_diamond: `$ npm install nodemon -D`
+<br>
+<br>
+Criar um script no `package.json` para o nodemon: "dev".
+<br>
+<br>
+Rodando o servidor: escrever no terminal `npm run dev`.
+<br>
+<br>
+Parar de rodar o servidor: no terminal clicar nas teclas de "Ctrl" e "C".
 
 <h2> Método HTTP </h2>
 <p> Porta = 3000 </p>
@@ -52,7 +72,7 @@
 
 - Recebe o `id` específico nos parâmetros e retorna o array com o pedido específico.
 - Usa const index = request.orderIndex
-- Usa a função const specificOrder = ordersTotal[index]
+- Usa a variável const specificOrder = ordersTotal[index]
 - Se o _pedido_ com o `id` específico não for encontrado:
 
   - Responde status HTTP com o código `404` (Not Found).
@@ -63,7 +83,7 @@
 - Recebe os parâmetros do pedido dentro do `body` da requisição.
 - O `id` é gerado de forma automática e única pelo `uuid.v4`.
 - Usa const { order, clientName, price, orderStatus } = request.body
-- Usa a função createOrder = { id:uuid.v4(),order, clientName, price, orderStatus }
+- Usa a variável createOrder = { id:uuid.v4(),order, clientName, price, orderStatus }
 - Depois do pedido criado:
   
   - Responde status HTTP com o código `201` (Created).
@@ -76,7 +96,7 @@
 - Usa const { order, clientName, price, orderStatus } = request.body
 - Usa const index = request.orderIndex
 - Usa const id = request.orderId
-- Usa a função updateOrder = { id, order, clientName, price, orderStatus }
+- Usa a variável updateOrder = { id, order, clientName, price, orderStatus }
 - Depois do pedido atualizado:
   
    - Retorna o JSON do pedido.
@@ -114,7 +134,7 @@
 
 ## Esquema de pedidos
 
-Cada _recurso_ de pedido dev estar de acordo com a seguinte estrutura JSON:
+Cada _recurso_ de pedido deve estar de acordo com a seguinte estrutura JSON:
 
 ```js
 {
@@ -125,5 +145,27 @@ Cada _recurso_ de pedido dev estar de acordo com a seguinte estrutura JSON:
   orderStatus: "Preparando"
 }
 ```
+## Middlewares
 
+##### `const checkId`
 
+- Utilizado em todas rotas que recebem o parâmetro `id`.
+- Verificar se o `id` existe.
+- Se o `id` não for encontrado:
+
+   - Responde status HTTP com o código `404` (Not Found).
+   - Retorna o seguinte JSON: `{ error: "Not Found" }`. 
+
+ ##### `const checkRequest`
+
+- Chamado em todas requisições de rotas.
+- Um `console.log` que mostra o método da requisiçao (GET, POST, PUT, DELETE e PATCH) e o método da URL.
+- Usa const method = request.method
+- Usa const url = request.url
+
+### Requisitos
+- Usa `next()` nos dois Middlewares.
+- Usa `findIndex` no Middleware para encontrar cada elemento do array. O método retorna o índice (posição) do primeiro elemento encontrado. Ou retorna -1 se nenhuma correspondência for encontrada. 
+
+### Exemplo do console.log
+[GET] - /order
